@@ -17,3 +17,13 @@
 ```powershell
 .\.venv\Scripts\python.exe .\main.py
 ```
+
+## 확인 방법
+
+```powershell
+.\.venv\Scripts\python.exe -B -m unittest -v
+git log -10 --oneline
+git log -1 --format=%B
+```
+
+실행 화면의 양쪽 끝에서 새 10마리가 모두 보이고, 돌아서는 순간 부리 방향이 바뀌는지 확인한다.
