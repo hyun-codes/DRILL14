@@ -15,3 +15,9 @@ BIRD_FRAMES = tuple(
     for (top, bottom), eye_positions in zip(ROW_BOUNDS, EYE_Y_BY_ROW)
     for column, eye_y in enumerate(eye_positions)
 )
+
+FLAPS_PER_SECOND = 2.5
+
+
+def wing_phase(elapsed, offset):
+    return (elapsed * FLAPS_PER_SECOND + offset) % 1.0
