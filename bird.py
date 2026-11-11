@@ -1,4 +1,4 @@
-from math import ceil
+from math import ceil, sin, tau
 
 from pico2d import get_canvas_height, get_canvas_width, load_image
 
@@ -72,4 +72,5 @@ class BirdFlock:
         x, direction = patrol_position(self.elapsed, self.left, self.right)
         for index, (dx, dy) in enumerate(self.offsets):
             phase = wing_phase(self.elapsed, index / len(self.offsets))
-            draw_bird(self.image, x + dx, self.y + dy, direction, phase)
+            y = self.y + dy + 3 * sin(tau * phase)
+            draw_bird(self.image, x + dx, y, direction, phase)
