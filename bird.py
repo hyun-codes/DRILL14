@@ -1,5 +1,9 @@
 from math import ceil
 
+from pico2d import get_canvas_height, get_canvas_width, load_image
+
+import game_framework
+
 
 SHEET_HEIGHT = 506
 COLUMN_WIDTH = 182
@@ -46,3 +50,26 @@ def patrol_position(elapsed, left, right):
     if distance < span:
         return left + distance, 1
     return right - (distance - span), -1
+
+
+class BirdFlock:
+    def __init__(self):
+        self.image = load_image('bird_animation.png')
+        self.elapsed = 0.0
+        self.offsets = tuple(
+            (column * 88 + row * 44, -row * 84)
+            for row in range(2)
+            for column in range(5)
+        )
+        self.left = SPRITE_MARGIN
+        self.right = get_canvas_width() - SPRITE_MARGIN - max(x for x, _ in self.offsets)
+        self.y = get_canvas_height() - 100
+
+    def update(self):
+        self.elapsed += game_framework.frame_time
+
+    def draw(self):
+        x, direction = patrol_position(self.elapsed, self.left, self.right)
+        for index, (dx, dy) in enumerate(self.offsets):
+            phase = wing_phase(self.elapsed, index / len(self.offsets))
+            draw_bird(self.image, x + dx, self.y + dy, direction, phase)
