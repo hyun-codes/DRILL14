@@ -20,6 +20,7 @@ BIRD_FRAMES = tuple(
 )
 
 FLAPS_PER_SECOND = 2.5
+FLIGHT_SPEED = 220.0
 DRAW_SCALE = 0.4
 BODY_X = 103
 SPRITE_MARGIN = ceil(max(BODY_X, LAST_COLUMN_WIDTH - BODY_X) * DRAW_SCALE)
@@ -37,3 +38,11 @@ def draw_bird(image, x, y, direction, phase):
         left, bottom, width, height, 0, 'h' if direction < 0 else '',
         center_x, center_y, round(width * DRAW_SCALE), round(height * DRAW_SCALE),
     )
+
+
+def patrol_position(elapsed, left, right):
+    span = right - left
+    distance = (elapsed * FLIGHT_SPEED) % (2 * span)
+    if distance < span:
+        return left + distance, 1
+    return right - (distance - span), -1
