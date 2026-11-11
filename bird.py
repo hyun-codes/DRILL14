@@ -1,3 +1,6 @@
+from math import ceil
+
+
 SHEET_HEIGHT = 506
 COLUMN_WIDTH = 182
 LAST_COLUMN_WIDTH = 190
@@ -17,7 +20,20 @@ BIRD_FRAMES = tuple(
 )
 
 FLAPS_PER_SECOND = 2.5
+DRAW_SCALE = 0.4
+BODY_X = 103
+SPRITE_MARGIN = ceil(max(BODY_X, LAST_COLUMN_WIDTH - BODY_X) * DRAW_SCALE)
 
 
 def wing_phase(elapsed, offset):
     return (elapsed * FLAPS_PER_SECOND + offset) % 1.0
+
+
+def draw_bird(image, x, y, direction, phase):
+    left, bottom, width, height, body_y = BIRD_FRAMES[int(phase * len(BIRD_FRAMES))]
+    center_x = x + direction * (width / 2 - BODY_X) * DRAW_SCALE
+    center_y = y + (body_y - height / 2) * DRAW_SCALE
+    image.clip_composite_draw(
+        left, bottom, width, height, 0, 'h' if direction < 0 else '',
+        center_x, center_y, round(width * DRAW_SCALE), round(height * DRAW_SCALE),
+    )
